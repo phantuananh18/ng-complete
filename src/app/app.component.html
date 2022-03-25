@@ -1,5 +1,18 @@
 <app-header></app-header>
 <div class="container">
+  <div>
+    <input style="margin-top: 20px" type="text" [(ngModel)]="username" />
+    <p>{{ username }}</p>
+  </div>
+  <div>
+    <button
+      style="margin-bottom: 20px"
+      [disabled]="username === ''"
+      (click)="DoReset()"
+    >
+      OK
+    </button>
+  </div>
   <div class="row">
     <div class="col-md-12">
       <app-recipes></app-recipes>
