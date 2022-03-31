@@ -1,5 +1,14 @@
-<app-header></app-header>
+<app-header (featureSelected)="onNavigate($event)"></app-header>
 <div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <app-recipes *ngIf="loadFeature === 'recipe'"></app-recipes>
+      <app-shopping-list
+        *ngIf="loadFeature === 'shopping-list'"
+      ></app-shopping-list>
+    </div>
+  </div>
+
   <div>
     <input style="margin-top: 20px" type="text" [(ngModel)]="username" />
     <p>{{ username }}</p>
@@ -12,11 +21,5 @@
     >
       OK
     </button>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <app-recipes></app-recipes>
-      <app-shopping-list></app-shopping-list>
-    </div>
   </div>
 </div>
