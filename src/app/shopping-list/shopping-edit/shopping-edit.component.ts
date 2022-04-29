@@ -1,4 +1,5 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Ingredient } from 'src/app/shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 
@@ -10,16 +11,39 @@ export class ShoppingEditComponent implements OnInit {
 
   constructor(private shoppingListService: ShoppingListService) { }
 
-  @ViewChild('nameInput') nameInput: ElementRef;
-  @ViewChild('amountInput') amountInput: ElementRef;
   ingredient: Ingredient;
+  editMode = false;
+  editedItemIndex: number;
+  editedItem: Ingredient;
+  @ViewChild('f') slForm: NgForm;
+  ngOnInit(): void {
+    this.shoppingListService.startedEditing.subscribe((index: number) => {
+      this.editedItemIndex = index;
+      this.editMode = true;
+      this.editedItem = this.shoppingListService.getIngredient(index);
+      this.slForm.setValue({
+        name: this.editedItem.name,
+        amount: this.editedItem.amount,
+      })
+    })
+  }
 
-  ngOnInit(): void { }
+  onAddItem(form: NgForm) {
+    const value = form.value;
+    this.ingredient = new Ingredient(value.name, value.amount);
+    this.editMode
+      ? this.shoppingListService.updateIngredient(this.editedItemIndex, this.ingredient)
+      : this.shoppingListService.addIngredient(this.ingredient);
+    this.onClear();
+  }
 
-  onAddItem() {
-    const ingredientName = this.nameInput.nativeElement.value;
-    const ingredientAmount = this.amountInput.nativeElement.value;
-    this.ingredient = new Ingredient(ingredientName, ingredientAmount);
-    this.shoppingListService.addIngredient(this.ingredient);
+  onClear() {
+    this.editMode = false;
+    this.slForm.reset();
+  }
+
+  onDelete() {
+    this.shoppingListService.delteIngredient(this.editedItemIndex);
+    this.onClear();
   }
 }
