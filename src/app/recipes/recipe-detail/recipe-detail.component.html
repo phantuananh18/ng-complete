@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xl-12">
-    <img src="" alt="" />
+    <img src="{{ recipe.imagePath }}" alt="" style="max-height: 300px" />
   </div>
 </div>
 
@@ -17,7 +17,7 @@
       role="group"
       aria-label="Button group with nested dropdown"
     >
-      <div class="btn-group" role="group">
+      <div class="btn-group" role="group" appDropdown>
         <button
           id="btnGroupDrop1"
           type="button"
@@ -28,20 +28,37 @@
         >
           Manage
         </button>
-      </div>
-      <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-        <a href="#" class="dropdown-item">To Shopping List</a>
-        <a href="#" class="dropdown-item">Edit Recipe</a>
-        <a href="#" class="dropdown-item">Manage Recipe</a>
+        <div class="dropdown-menu">
+          <a
+            style="cursor: pointer"
+            class="dropdown-item"
+            (click)="onAddToShoppingList()"
+          >
+            To Shopping List
+          </a>
+          <a
+            style="cursor: pointer"
+            class="dropdown-item"
+            (click)="onEditRecipe()"
+            >Edit Recipe
+          </a>
+          <a style="cursor: pointer" class="dropdown-item">Manage Recipe</a>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-sm-12">Description</div>
+  <div class="col-sm-12">{{ recipe.description }}</div>
 </div>
 
 <div class="row">
-  <div class="col-sm-12">Ingredients</div>
+  <div class="col-sm-12">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
+        {{ ingredient.name }} - {{ ingredient.amount }}
+      </li>
+    </ul>
+  </div>
 </div>
