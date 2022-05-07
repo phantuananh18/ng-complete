@@ -33,7 +33,16 @@ export class RecipeService {
     constructor(private slService: ShoppingListService) { }
 
     getRecipes() {
-        return this.recipes.slice(); //Return coppy array instead of real array
+        // return this.recipes.slice(); //Return coppy array instead of real array
+        return this.recipes;
+    }
+
+    addRecipe(recipe: Recipe) {
+        this.recipes.push(recipe);
+    }
+
+    updateRecipe(index: number, newRecipe: Recipe) {
+        this.recipes[index] = newRecipe;
     }
 
     addIngredientsShoppingList(ingredients: Ingredient[]) {
@@ -42,5 +51,9 @@ export class RecipeService {
 
     getRecipe(index: number) {
         return this.recipes[index];
+    }
+
+    deleteRecipe(index: number) {
+        this.recipes.splice(index);
     }
 }
